@@ -8,3 +8,5 @@ CREATE TABLE audit_events
     metadata_json TEXT         NOT NULL,
     occurred_at   TIMESTAMP    NOT NULL
 );
+
+create index idx_audit_actor_time on audit_events (actor_id, occurred_at desc);
