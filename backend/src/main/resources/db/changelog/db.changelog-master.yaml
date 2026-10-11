@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-users-schema.sql
+      author: root
+      changes:
+        - sqlFile:
+            path: db/changelog/001-create-users-schema.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
