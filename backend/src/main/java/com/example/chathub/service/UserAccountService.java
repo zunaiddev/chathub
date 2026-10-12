@@ -1,17 +1,20 @@
 package com.example.chathub.service;
 
-import com.example.chathub.repository.UserAccountRepository;
-import jakarta.annotation.PostConstruct;
+import com.example.chathub.model.User;
+import com.example.chathub.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class UserAccountService {
-    private final UserAccountRepository userService;
+    private final UserRepository userRepository;
 
-    @PostConstruct
-    public void checkUser() {
-        userService.findAll().forEach(System.out::println);
+    public User createUserAccount(String name, String email, String password) {
+        return userRepository.save(new User(name, email, password));
+    }
+
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

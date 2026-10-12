@@ -21,17 +21,23 @@ public class JwtService {
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public IssuedToken issueToken(String subject, Map<String, ?> claims) {
+    public String issueToken(String subject, Duration expiry, Map<String, Object> claims) {
         Instant now = Instant.now();
-        Instant expiresAt = now.plus(Duration.ofMinutes(15));
+        Instant expiresAt = now.plus(expiry);
 
-        String token = Jwts.builder().subject(subject)
+        return Jwts.builder().subject(subject)
                 .claims(claims)
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(expiresAt))
                 .signWith(secretKey)
                 .compact();
+    }
 
-        return new IssuedToken(token, expiresAt, TokenType.valueOf(claims.get("type").toString()));
+    public String generateAccessToken(long userId) {
+        return this.issueToken(String.valueOf(userId), Duration.ofMinutes(15), Map.of("type", TokenType.AUTH));
+    }
+
+    public String generateRefreshToken(long userId) {
+        return this.issueToken(String.valueOf(userId), Duration.ofDays(30), Map.of("type", TokenType.REFRESH));
     }
 }

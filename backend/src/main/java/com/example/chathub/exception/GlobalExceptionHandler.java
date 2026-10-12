@@ -3,19 +3,51 @@ package com.example.chathub.exception;
 import com.example.chathub.enums.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
+import org.springframework.boot.webmvc.error.DefaultErrorAttributes;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private final DefaultErrorAttributes errorAttributes;
+
+    public GlobalExceptionHandler(DefaultErrorAttributes errorAttributes) {
+        this.errorAttributes = errorAttributes;
+    }
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ErrorResponse> handleCustomException(@NonNull CustomException exc) {
         log.warn(exc.getMessage());
         return ResponseEntity.status(exc.getStatus())
                 .body(new ErrorResponse(exc.getMessage(), exc.getCode(), exc.getDetails()));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException exc) {
+        Map<String, String> errors = new HashMap<>();
+
+        exc.getBindingResult().getFieldErrors()
+                .forEach(fieldError -> errors.put(fieldError.getField(), fieldError.getDefaultMessage()));
+
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(errors);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(Exception exc) {
+        log.warn(exc.getMessage());
+
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT)
+                .body(new ErrorResponse(exc.getMessage(),
+                        ErrorCode.INVALID_BODY));
     }
 
     @ExceptionHandler(Exception.class)

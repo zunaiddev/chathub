@@ -1,5 +1,6 @@
 package com.example.chathub.model;
 
+import com.example.chathub.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.util.Locale;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserAccount {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,7 +28,14 @@ public class UserAccount {
     private String password;
 
     @Column(nullable = false)
+    private boolean locked;
+
+    @Column(nullable = false)
     private boolean enabled;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole role;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
@@ -35,11 +43,17 @@ public class UserAccount {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
-    public UserAccount(String name, String email, String password) {
+    public User(String name, String email, String password, UserRole role) {
         this.name = name;
         this.email = email.strip().toLowerCase(Locale.ROOT);
         this.password = password;
         this.enabled = true;
+        this.locked = false;
+        this.role = role;
+    }
+
+    public User(String name, String email, String password) {
+        this(name, email, password, UserRole.USER);
     }
 
     @PrePersist

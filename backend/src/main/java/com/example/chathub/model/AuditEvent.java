@@ -1,43 +1,53 @@
 package com.example.chathub.model;
 
+import com.example.chathub.enums.AuditEventType;
+import com.example.chathub.enums.AuditResourceType;
+import com.example.chathub.enums.AuditStatus;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
-import java.util.UUID;
 
 @Data
 @Entity
 @Table(name = "audit_events")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class AuditEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "actor_id", nullable = false)
-    private UUID actorId;
+    @Column(name = "actor_id")
+    private Long actorId;
 
-    @Column(nullable = false, length = 80)
-    private String action;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "event_type", nullable = false, columnDefinition = "audit_event_type")
+    private AuditEventType eventType;
 
-    @Column(name = "resource_type", nullable = false, length = 40)
-    private String resourceType;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "resource_type", nullable = false, columnDefinition = "audit_resource_type")
+    private AuditResourceType resourceType;
 
-    @Column(name = "resource_id", nullable = false, length = 100)
+    @Column(name = "resource_id", length = 100)
     private String resourceId;
 
-    @Column(name = "metadata_json", nullable = false, columnDefinition = "TEXT")
-    private String metadataJson;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "audit_status")
+    private AuditStatus status;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb")
+    private String metadata;
 
     @Column(name = "occurred_at", nullable = false)
     private Instant occurredAt;
-
-    public AuditEvent(UUID actorId, String action, String resourceType, String resourceId, String metadataJson) {
-        this.actorId = actorId;
-        this.action = action;
-        this.resourceType = resourceType;
-        this.resourceId = resourceId;
-        this.metadataJson = metadataJson;
-        this.occurredAt = Instant.now();
-    }
 }

@@ -1,4 +1,4 @@
-package com.example.chathub.controller;
+package com.example.chathub.dto;
 
 import com.example.chathub.validation.ValidEmail;
 import com.example.chathub.validation.ValidName;
