@@ -14,3 +14,19 @@ databaseChangeLog:
         - sqlFile:
             path: db/changelog/002-create-audit-event-schema.sql
             relativeToChangelogFile: false
+
+  - changeSet:
+      id: 003
+      author: zunaid
+      changes:
+        - sqlFile:
+            path: db/changelog/003-create-conversation-schema.sql
+            relativeToChangelogFile: false
+
+  - changeSet:
+      id: 004
+      author: zunaid
+      changes:
+        - sqlFile:
+            path: db/changelog/004-conversation-member.sql
+            relativeToChangelogFile: false
