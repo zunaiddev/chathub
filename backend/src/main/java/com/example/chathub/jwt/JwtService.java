@@ -1,6 +1,7 @@
 package com.example.chathub.jwt;
 
 import com.example.chathub.enums.TokenType;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +32,11 @@ public class JwtService {
                 .expiration(Date.from(expiresAt))
                 .signWith(secretKey)
                 .compact();
+    }
+
+    public Claims parse(String token) {
+        return Jwts.parser().verifyWith(secretKey)
+                .build().parseSignedClaims(token).getPayload();
     }
 
     public String generateAccessToken(long userId) {

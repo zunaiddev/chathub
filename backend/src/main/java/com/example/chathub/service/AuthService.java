@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-    private final UserAccountService userService;
+    private final UserService userService;
     private final AuditEventService auditEventService;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
@@ -33,6 +33,8 @@ public class AuthService {
         if (userService.existsByEmail(request.email())) {
             throw new ConflictException("email already exists");
         }
+
+        System.out.println();
 
         User user = userService.createUserAccount(request.name(), request.email(),
                 passwordEncoder.encode(request.password()));
