@@ -1,6 +1,6 @@
 package com.example.chathub.config;
 
-import com.example.chathub.filter.JwtAuthFilter;
+import com.example.chathub.security.filter.JwtAuthFilter;
 import com.example.chathub.utils.Routes;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

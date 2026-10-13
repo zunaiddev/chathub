@@ -1,7 +1,8 @@
 package com.example.chathub.security;
 
-import com.example.chathub.model.User;
-import com.example.chathub.repository.UserRepository;
+import com.example.chathub.security.principal.UserPrincipal;
+import com.example.chathub.user.User;
+import com.example.chathub.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.userdetails.UserDetails;

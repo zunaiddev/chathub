@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 001
+      id: 001-create-users-schema
       author: root
       changes:
         - sqlFile:
@@ -8,7 +8,7 @@ databaseChangeLog:
             relativeToChangelogFile: false
 
   - changeSet:
-      id: 002
+      id: 002-create-audit-event-schema
       author: zunaid
       changes:
         - sqlFile:

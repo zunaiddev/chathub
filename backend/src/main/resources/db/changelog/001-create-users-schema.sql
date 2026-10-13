@@ -5,7 +5,7 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     role   VARCHAR(255) NOT NULL,
     enabled BOOL NOT NULL,
-    locked BOOL         NOT NULL,
+    locked BOOL NOT NULL,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL
 )

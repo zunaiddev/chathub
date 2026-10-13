@@ -17,11 +17,14 @@ public class Utils {
         PrintWriter writer = res.getWriter();
         ObjectMapper mapper = new ObjectMapper();
 
-        writer.write(mapper.writeValueAsString(new ErrorResponse(message, code)));
+        ErrorResponse errorResponse = code == null ? new ErrorResponse(message, status) : new ErrorResponse(message, code);
+
+
+        writer.write(mapper.writeValueAsString(errorResponse));
         writer.flush();
     }
 
     public static void setError(HttpServletResponse res, HttpStatus status, String message) throws IOException {
-        Utils.setError(res, status, message, ErrorCode.UNAUTHORISED);
+        Utils.setError(res, status, message, null);
     }
 }
