@@ -1,16 +1,16 @@
 package com.example.chathub.cleanup;
 
 import com.example.chathub.utils.Normalizer;
-import com.fasterxml.jackson.core.JacksonException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.ValueDeserializer;
+import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
-
-public class NameDeserializer extends JsonDeserializer<String> {
+@Slf4j
+public class NameDeserializer extends ValueDeserializer<String> {
     @Override
-    public String deserialize(JsonParser p, DeserializationContext ctx) throws IOException, JacksonException {
+    public String deserialize(JsonParser p, DeserializationContext ctx) throws JacksonException {
         String value = p.getValueAsString();
 
         return Normalizer.normalizeName(value);

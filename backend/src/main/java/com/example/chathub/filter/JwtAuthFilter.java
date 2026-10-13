@@ -3,16 +3,16 @@ package com.example.chathub.filter;
 import com.example.chathub.enums.ErrorCode;
 import com.example.chathub.enums.TokenType;
 import com.example.chathub.exception.CustomException;
-import com.example.chathub.jwt.JwtService;
 import com.example.chathub.model.User;
 import com.example.chathub.security.UserPrincipal;
+import com.example.chathub.service.JwtService;
 import com.example.chathub.service.UserService;
+import com.example.chathub.utils.Routes;
 import com.example.chathub.utils.Utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
@@ -36,12 +36,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
-        return request.getRequestURI().startsWith("/api/auth");
+        return Routes.shouldNotFilter(request.getRequestURI());
     }
 
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request, @NonNull HttpServletResponse response,
-                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
+                                    @NonNull FilterChain filterChain) throws IOException {
         String authHeader = request.getHeader("Authorization");
 
         try {

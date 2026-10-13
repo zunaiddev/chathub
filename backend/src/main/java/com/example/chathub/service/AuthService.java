@@ -7,7 +7,6 @@ import com.example.chathub.enums.AuditEventType;
 import com.example.chathub.enums.AuditResourceType;
 import com.example.chathub.enums.AuditStatus;
 import com.example.chathub.exception.ConflictException;
-import com.example.chathub.jwt.JwtService;
 import com.example.chathub.model.User;
 import com.example.chathub.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;

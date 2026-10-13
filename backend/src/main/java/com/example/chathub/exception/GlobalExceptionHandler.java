@@ -7,8 +7,11 @@ import org.springframework.boot.webmvc.error.DefaultErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
@@ -46,8 +49,24 @@ public class GlobalExceptionHandler {
         log.warn(exc.getMessage());
 
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT)
-                .body(new ErrorResponse(exc.getMessage(),
+                .body(new ErrorResponse("Invalid or Missing Required Request body",
                         ErrorCode.INVALID_BODY));
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(BadCredentialsException.class)
+    public ErrorResponse handleBadCredentialsException(BadCredentialsException exc) {
+        log.warn(exc.getMessage());
+
+        return new ErrorResponse("Invalid Email Or Password", ErrorCode.INVALID_EMAIL_OR_PASSWORD);
+    }
+
+    @ResponseStatus(HttpStatus.LOCKED)
+    @ExceptionHandler(LockedException.class)
+    public ErrorResponse handleBadCredentialsException(LockedException exc) {
+        log.warn(exc.getMessage());
+
+        return new ErrorResponse("Account is locked", HttpStatus.LOCKED);
     }
 
     @ExceptionHandler(Exception.class)

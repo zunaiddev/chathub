@@ -1,4 +1,4 @@
-package com.example.chathub.jwt;
+package com.example.chathub.service;
 
 import com.example.chathub.enums.TokenType;
 import io.jsonwebtoken.Claims;

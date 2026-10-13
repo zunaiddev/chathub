@@ -1,6 +1,7 @@
 package com.example.chathub.config;
 
 import com.example.chathub.filter.JwtAuthFilter;
+import com.example.chathub.utils.Routes;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -71,7 +72,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers("/auth/**", "/health", "/error", "/actuator/**")
+                        .requestMatchers(Routes.getPublicRoutes())
                         .permitAll()
                         .anyRequest().authenticated()
                 )

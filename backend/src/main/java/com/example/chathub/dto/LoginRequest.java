@@ -1,10 +1,12 @@
 package com.example.chathub.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
+import com.example.chathub.cleanup.EmailDeserializer;
+import com.example.chathub.validation.ValidEmail;
+import jakarta.validation.constraints.NotBlank;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 public record LoginRequest(
-        @NotNull(message = "email is required") @Email String email,
-        @NotNull String password
+        @JsonDeserialize(using = EmailDeserializer.class) @ValidEmail String email,
+        @NotBlank(message = "password is required") String password
 ) {
 }
