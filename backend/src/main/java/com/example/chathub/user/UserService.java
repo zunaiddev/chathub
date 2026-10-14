@@ -2,6 +2,7 @@ package com.example.chathub.user;
 
 import com.example.chathub.enums.ErrorCode;
 import com.example.chathub.exception.CustomException;
+import com.example.chathub.user.dto.PublicUserRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,11 @@ public class UserService {
 
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    public PublicUserRes searchByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "User not found with email " + email, ErrorCode.USER_NOT_FOUND));
+
+        return new PublicUserRes(user);
     }
 }

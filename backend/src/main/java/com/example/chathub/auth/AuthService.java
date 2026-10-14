@@ -8,10 +8,12 @@ import com.example.chathub.enums.AuditEventType;
 import com.example.chathub.enums.AuditResourceType;
 import com.example.chathub.enums.AuditStatus;
 import com.example.chathub.exception.ConflictException;
+import com.example.chathub.security.filter.JwtAuthFilter;
 import com.example.chathub.security.jwt.JwtService;
 import com.example.chathub.security.principal.UserPrincipal;
 import com.example.chathub.user.User;
 import com.example.chathub.user.UserService;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -67,5 +69,11 @@ public class AuthService {
         String refreshToken = jwtService.generateRefreshToken(user.getId());
 
         return new AuthResponse(user.getId(), accessToken, refreshToken);
+    }
+
+    public AuthResponse refreshToken(String token) {
+        Claims claims = jwtService.parse(token);
+
+        return null;
     }
 }

@@ -5,12 +5,14 @@ import LoginPage from '../features/auth/LoginPage'
 import SignUpPage from '../features/auth/SignUpPage'
 import HomePage from '../features/home/HomePage'
 import NotFoundPage from '../features/not-found/NotFoundPage'
+import ChatsPage from '../features/chats/ChatsPage'
 
 const routeDefinitions = [
     {
         element: <RootLayout/>,
         children: [
             {path: '/', element: <HomePage/>},
+            {path: '/chats', element: <ChatsPage/>},
             {
                 path: '/auth',
                 element: <AuthLayout/>,

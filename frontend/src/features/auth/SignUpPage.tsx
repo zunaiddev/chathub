@@ -4,11 +4,7 @@ import AuthLink from '../../components/ui/AuthLink'
 import Button from '../../components/ui/Button'
 import InputField from '../../components/ui/InputField.tsx'
 import {AuthService} from '../../lib/api/AuthService'
-import {
-    emailValidationRules,
-    nameValidationRules,
-    registrationPasswordValidationRules,
-} from './validationRules'
+import {emailValidationRules, nameValidationRules, registrationPasswordValidationRules,} from './validationRules';
 
 type SignUpFormValues = {
     name: string
@@ -36,8 +32,9 @@ function SignUpPage() {
             setError('email', {
                 type: 'server',
                 message: response.error.message,
-            })
-            return
+            });
+
+            return;
         }
 
         if (response.status < 500) {
@@ -50,7 +47,8 @@ function SignUpPage() {
             <div className="mb-7">
                 <p className="text-sm font-medium text-(--color-brand-hover)">Get started for free</p>
                 <h1 className="mt-2 text-2xl font-semibold tracking-tight text-(--color-text)">Create your account</h1>
-                <p className="mt-2 text-sm leading-6 text-(--color-text-secondary)">Join your team and bring every conversation
+                <p className="mt-2 text-sm leading-6 text-(--color-text-secondary)">Join your team and bring every
+                    conversation
                     together.</p>
             </div>
 

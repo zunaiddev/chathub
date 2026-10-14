@@ -16,6 +16,9 @@ publicApi.interceptors.response.use(
   },
   function handleResponseError(error: unknown) {
     if (axios.isAxiosError(error)) {
+      if (error.config?.url === '/users/search') {
+        return Promise.reject(error)
+      }
       if (!error.response) {
         toast.error('Unable to reach the server. Check your internet connection and try again.')
       } else if (error.response.status >= 500) {

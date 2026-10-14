@@ -5,6 +5,8 @@ import Button from '../../components/ui/Button'
 import InputField from '../../components/ui/InputField.tsx'
 import {AuthService} from '../../lib/api/AuthService'
 import {emailValidationRules, loginPasswordValidationRules} from './validationRules'
+import {saveAccessToken} from '../../lib/api/authToken'
+import {UserService} from '../../lib/api/UserService'
 
 type LoginFormValues = {
     email: string
@@ -22,6 +24,14 @@ function LoginPage() {
         const response = await AuthService.login(values)
 
         if (response.success) {
+            if (response.payload?.accessToken) {
+                saveAccessToken(response.payload.accessToken)
+                const profileResponse = await UserService.getCurrentUser()
+                if (!profileResponse.success) {
+                    toast.error(profileResponse.error?.message ?? 'Unable to load your profile.')
+                    return
+                }
+            }
             toast.success('Logged in successfully.')
             return
         }

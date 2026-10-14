@@ -1,0 +1,2 @@
+GET {{baseUrl}}/users/search?email=john@gmail.co
+Authorization: Bearer {{accessToken}}
