@@ -2,7 +2,11 @@ POST {{baseUrl}}/auth/register
 Content-Type: application/json
 
 {
-  "name": "                zunA   eudhed AHm        ",
-  "email": "JOhn@te1st.com",
+  "name": "User III",
+  "email": "user4@gmail.com",
   "password": "John@123"
 }
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+%}

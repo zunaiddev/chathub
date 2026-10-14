@@ -16,7 +16,13 @@ class ConversationRepositoryTest {
     private ConversationRepository conversationRepository;
 
     @Autowired
+    private ConversationService conversationService;
+
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ConversationMemberRepository conversationMemberRepository;
 
     private final String email = "user@test.com";
 
@@ -48,5 +54,26 @@ class ConversationRepositoryTest {
                 .findByCreatedBy(user).orElse(null);
 
         Assert.notNull(conversation, "Conversation is Null");
+    }
+
+    @Test
+    void findAllByUserId() {
+        User user = userRepository.findByEmail(email).orElseGet(() -> {
+            User newUser = new User("User 1", email, "Test@123");
+            return userRepository.save(newUser);
+        });
+
+        Conversation conversation1 = conversationRepository.save(new Conversation(user, ConversationType.DIRECT));
+        Conversation conversation2 = conversationRepository.save(new Conversation(user, ConversationType.DIRECT));
+
+        conversationMemberRepository.save(new ConversationMember(conversation1, user, java.time.Instant.now()));
+        conversationMemberRepository.save(new ConversationMember(conversation2, user, java.time.Instant.now()));
+
+        java.util.List<Conversation> conversations = conversationRepository.findAllByUserId(user.getId());
+
+        assertNotNull(conversations);
+        org.junit.jupiter.api.Assertions.assertTrue(conversations.size() >= 2);
+        org.junit.jupiter.api.Assertions.assertTrue(conversations.stream().anyMatch(c -> c.getId().equals(conversation1.getId())));
+        org.junit.jupiter.api.Assertions.assertTrue(conversations.stream().anyMatch(c -> c.getId().equals(conversation2.getId())));
     }
 }

@@ -1,0 +1,4 @@
+@userId = 4
+
+POST {{baseUrl}}/conversations/{{userId}}
+Authorization: Bearer {{accessToken}}

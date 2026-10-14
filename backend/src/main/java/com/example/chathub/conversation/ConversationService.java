@@ -3,12 +3,14 @@ package com.example.chathub.conversation;
 import com.example.chathub.audit.AuditEventService;
 import com.example.chathub.conversation.dto.ConversationRes;
 import com.example.chathub.enums.ConversationType;
+import com.example.chathub.exception.ConflictException;
 import com.example.chathub.user.User;
 import com.example.chathub.user.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,6 +24,10 @@ public class ConversationService {
 
     @Transactional
     public ConversationRes createConversation(User user, long userId) {
+        if (user.getId().equals(userId)) {
+            throw new ConflictException("You can't create a conversation with yourself");
+        }
+
         User user2 = userService.findById(userId);
 
         Optional<Conversation> conversation = conversationRepository
@@ -36,5 +42,10 @@ public class ConversationService {
         memberService.create(newConversation, user, user2);
 
         return new ConversationRes(newConversation);
+    }
+
+    public List<ConversationRes> findAllUser(User user) {
+        return conversationRepository.findAllByUserId(user.getId())
+                .stream().map(ConversationRes::new).toList();
     }
 }
