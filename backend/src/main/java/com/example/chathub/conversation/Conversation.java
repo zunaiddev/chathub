@@ -4,6 +4,7 @@ import com.example.chathub.enums.ConversationType;
 import com.example.chathub.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.time.Instant;
 @Entity
 @Table(name = "conversations")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Conversation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

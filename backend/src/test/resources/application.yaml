@@ -7,7 +7,7 @@ spring:
     name: chathub
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/chathub
+    url: jdbc:postgresql://localhost:5432/postgres
     username: root
     password: pass
 
@@ -20,7 +20,7 @@ spring:
     open-in-view: false
 
     hibernate:
-      ddl-auto: create-only
+      ddl-auto: create-drop
 
 
     properties:
@@ -31,7 +31,7 @@ spring:
     show-sql: true
 
   liquibase:
-    enabled: false
+    enabled: true
     change-log: classpath:/db/changelog/db.changelog-master.yaml
 
   jackson:

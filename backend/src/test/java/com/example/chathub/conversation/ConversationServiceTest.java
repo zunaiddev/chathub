@@ -1,12 +1,11 @@
 package com.example.chathub.conversation;
 
-import com.example.chathub.enums.ConversationType;
+import com.example.chathub.conversation.dto.ConversationRes;
 import com.example.chathub.user.User;
 import com.example.chathub.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.Assert;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -20,14 +19,13 @@ class ConversationServiceTest {
 
     @Test
     void createConversation() {
-        User highUser = userRepo.findByEmail("user1@test.com").orElse(null);
-        User lowUser = userRepo.findByEmail("user2@test.com").orElse(null);
+        User user1 = userRepo.save(new User("User 1", "user1@gmail.com", "Test@123"));
+        User user2 = userRepo.save(new User("User 2", "user2@gmail.com", "Test@123"));
 
-        Assert.notNull(highUser, "No Higher User Present");
-        Assert.notNull(lowUser, "No Low User Present");
-
-        Conversation conversation = conversationService.createConversation(highUser, lowUser, ConversationType.DIRECT);
+        ConversationRes conversation = conversationService.createConversation(user1, user2.getId());
+        ConversationRes conversation2 = conversationService.createConversation(user1, user2.getId());
 
         assertNotNull(conversation);
+        assertNotNull(conversation2);
     }
 }
