@@ -71,7 +71,7 @@ Goals
   /* Shape and elevation */
   --radius-control: 0.625rem;
   --radius-panel: 0.875rem;
-  --shadow-panel: 0 1px 3px rgb(0 0 0 / 0.24);
+  --shadow-panel: 0 1px 3px rgb (0 0 0 / 0.24);
   }
   Usage rules
 - Primary buttons: --color-brand; hover: --color-brand-hover.

@@ -61,7 +61,7 @@ function AddUserDialog({open, isSearching, user, errorMessage, onClose, onSearch
                            htmlFor="user-search-email">Email address</label>
                     <div className="flex gap-2">
                         <input id="user-search-email"
-                               className="h-11 min-w-0 flex-1 rounded-(--radius-control) border border-(--color-border) bg-(--color-surface-subtle) px-3 text-sm text-(--color-text) outline-none placeholder:text-(--color-text-muted) focus:border-(--color-focus) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-focus)"
+                               className="h-11 min-w-0 flex-1 rounded-(--radius-control) border border-(--color-border) bg-(--color-surface-subtle) px-3 text-sm text-(--color-text) outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-focus)"
                                type="email" autoComplete="email" placeholder="name@example.com" value={email}
                                onChange={function updateEmail(event) {
                                    setEmail(event.currentTarget.value);

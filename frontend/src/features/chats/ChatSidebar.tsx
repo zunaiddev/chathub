@@ -4,7 +4,7 @@ import ChatAvatar from './ChatAvatar'
 import ChatIcon from './ChatIcon'
 import type {Conversation} from './types'
 import AddUserDialog from './AddUserDialog'
-import {UserService, type UserSearchResult} from '../../lib/api/UserService'
+import {type UserSearchResult, UserService} from '../../lib/api/UserService'
 
 type ChatSidebarProps = {
     conversations: Conversation[]
@@ -132,7 +132,10 @@ function ChatSidebar({conversations, selectedId, onSelect, mobileOpen}: ChatSide
                 <span className="size-[7px] rounded-full bg-(--color-info)"/>
                 <span>Sample conversations</span>
             </footer>
-            <AddUserDialog open={isAddUserOpen} isSearching={isSearchingUser} user={searchedUser} errorMessage={userSearchError} onClose={function closeAddUser() { setIsAddUserOpen(false) }} onSearch={searchUser}/>
+            <AddUserDialog open={isAddUserOpen} isSearching={isSearchingUser} user={searchedUser}
+                           errorMessage={userSearchError} onClose={function closeAddUser() {
+                setIsAddUserOpen(false)
+            }} onSearch={searchUser}/>
         </aside>
     )
 }

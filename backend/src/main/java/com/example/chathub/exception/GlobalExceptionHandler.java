@@ -1,6 +1,7 @@
 package com.example.chathub.exception;
 
 import com.example.chathub.enums.ErrorCode;
+import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
 import org.springframework.boot.webmvc.error.DefaultErrorAttributes;
@@ -21,10 +22,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private final DefaultErrorAttributes errorAttributes;
-
     public GlobalExceptionHandler(DefaultErrorAttributes errorAttributes) {
-        this.errorAttributes = errorAttributes;
     }
 
     @ExceptionHandler(CustomException.class)
@@ -67,6 +65,14 @@ public class GlobalExceptionHandler {
         log.warn(exc.getMessage());
 
         return new ErrorResponse("Account is locked", HttpStatus.LOCKED);
+    }
+
+    @ExceptionHandler(JwtException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handleJwtException(JwtException jwtException) {
+        log.warn(jwtException.getMessage());
+
+        return new ErrorResponse(jwtException.getMessage(), ErrorCode.JWT_ERROR);
     }
 
     @ExceptionHandler(Exception.class)

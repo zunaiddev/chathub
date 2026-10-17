@@ -46,7 +46,8 @@ function LoginPage() {
             <div className="mb-7">
                 <p className="text-sm font-medium text-(--color-brand-hover)">Welcome back</p>
                 <h1 className="mt-2 text-2xl font-semibold tracking-tight text-(--color-text)">Log in to ChatHub</h1>
-                <p className="mt-2 text-sm leading-6 text-(--color-text-secondary)">Pick up where your team left off.</p>
+                <p className="mt-2 text-sm leading-6 text-(--color-text-secondary)">Pick up where your team left
+                    off.</p>
             </div>
 
             <form className="space-y-5" onSubmit={handleSubmit(onSubmit)} noValidate>

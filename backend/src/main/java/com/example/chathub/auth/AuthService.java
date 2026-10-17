@@ -7,8 +7,8 @@ import com.example.chathub.auth.dto.RegisterRequest;
 import com.example.chathub.enums.AuditEventType;
 import com.example.chathub.enums.AuditResourceType;
 import com.example.chathub.enums.AuditStatus;
+import com.example.chathub.enums.TokenType;
 import com.example.chathub.exception.ConflictException;
-import com.example.chathub.security.filter.JwtAuthFilter;
 import com.example.chathub.security.jwt.JwtService;
 import com.example.chathub.security.principal.UserPrincipal;
 import com.example.chathub.user.User;
@@ -72,8 +72,14 @@ public class AuthService {
     }
 
     public AuthResponse refreshToken(String token) {
-        Claims claims = jwtService.parse(token);
+        Claims claims = jwtService.parse(token, TokenType.REFRESH);
 
-        return null;
+        long id = Long.parseLong(claims.getSubject());
+
+        User user = userService.findById(id);
+
+        String accessToken = jwtService.generateAccessToken(user.getId());
+
+        return new AuthResponse(user.getId(), accessToken, null);
     }
 }

@@ -10,8 +10,6 @@ import com.example.chathub.user.UserService;
 import com.example.chathub.utils.Routes;
 import com.example.chathub.utils.Utils;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,7 +26,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.concurrent.locks.Lock;
 
 @Component
 @RequiredArgsConstructor
@@ -54,7 +51,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             String token = authHeader.substring(7);
 
-            Claims claims = jwtService.parse(token);
+            Claims claims = jwtService.parse(token, TokenType.AUTH);
 
             if (TokenType.valueOf(claims.get("type", String.class)) != TokenType.AUTH) {
                 throw new CustomException(HttpStatus.FORBIDDEN, "This token is not allowed here", ErrorCode.INVALID_TOKEN);
@@ -72,10 +69,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             Utils.setError(response, e.getStatus(), e.getMessage(), e.getCode());
         } catch (LockedException e) {
             Utils.setError(response, HttpStatus.LOCKED, e.getMessage());
-        } catch (ExpiredJwtException e) {
-            Utils.setError(response, HttpStatus.UNAUTHORIZED, "Token has been expired", ErrorCode.EXPIRED_TOKEN);
-        } catch (JwtException e) {
-            Utils.setError(response, HttpStatus.UNAUTHORIZED, e.getMessage(), ErrorCode.JWT_ERROR);
         } catch (Exception e) {
             Utils.setError(response, HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", ErrorCode.INTERNAL_SERVER_ERROR);
         }
