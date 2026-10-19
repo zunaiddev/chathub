@@ -72,7 +72,7 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleJwtException(JwtException jwtException) {
         log.warn(jwtException.getMessage());
 
-        return new ErrorResponse(jwtException.getMessage(), ErrorCode.JWT_ERROR);
+        return new ErrorResponse(jwtException.getMessage(), ErrorCode.INVALID_JWT);
     }
 
     @ExceptionHandler(Exception.class)

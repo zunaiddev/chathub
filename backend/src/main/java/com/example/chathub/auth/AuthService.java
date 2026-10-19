@@ -13,9 +13,9 @@ import com.example.chathub.security.jwt.JwtService;
 import com.example.chathub.security.principal.UserPrincipal;
 import com.example.chathub.user.User;
 import com.example.chathub.user.UserService;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -72,11 +72,13 @@ public class AuthService {
     }
 
     public AuthResponse refreshToken(String token) {
-        Claims claims = jwtService.parse(token, TokenType.REFRESH);
+        var claims = jwtService.parse(token, TokenType.REFRESH);
 
-        long id = Long.parseLong(claims.getSubject());
+        User user = userService.findById(claims.getUserId());
 
-        User user = userService.findById(id);
+        if (user.isLocked()) {
+            throw new LockedException("User Account is locked");
+        }
 
         String accessToken = jwtService.generateAccessToken(user.getId());
 

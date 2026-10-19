@@ -3,7 +3,6 @@ package com.example.chathub.security.jwt;
 import com.example.chathub.enums.ErrorCode;
 import com.example.chathub.enums.TokenType;
 import com.example.chathub.exception.CustomException;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -21,6 +20,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -31,7 +31,7 @@ public class JwtService {
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String issueToken(String subject, Duration expiry, Map<String, Object> claims) {
+    public String issueToken(String subject, Duration expiry, Map<String, Object> claims, String jti) {
         Instant now = Instant.now();
         Instant expiresAt = now.plus(expiry);
 
@@ -40,15 +40,20 @@ public class JwtService {
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(expiresAt))
                 .signWith(secretKey)
+                .id(jti)
                 .compact();
     }
 
-    public Claims parse(@NotNull String token, @NotNull TokenType tokenType) {
-        try {
-            Claims claims = Jwts.parser().verifyWith(secretKey)
-                    .build().parseSignedClaims(token).getPayload();
+    public String issueToken(String subject, Duration expiry, Map<String, Object> claims) {
+        return issueToken(subject, expiry, claims, UUID.randomUUID().toString());
+    }
 
-            if (tokenType == null || !tokenType.equals(TokenType.valueOf(claims.get("type").toString()))) {
+    public JwtClaims parse(@NotNull String token, @NotNull TokenType tokenType) {
+        try {
+            JwtClaims claims = new JwtClaims(Jwts.parser().verifyWith(secretKey)
+                    .build().parseSignedClaims(token).getPayload());
+
+            if (!claims.getTokenType().equals(tokenType)) {
                 throw new CustomException(HttpStatus.FORBIDDEN, "This token is not allowed here", ErrorCode.INVALID_TOKEN_TYPE);
             }
 

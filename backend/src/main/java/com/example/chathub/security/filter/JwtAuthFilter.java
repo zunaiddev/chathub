@@ -9,7 +9,6 @@ import com.example.chathub.user.User;
 import com.example.chathub.user.UserService;
 import com.example.chathub.utils.Routes;
 import com.example.chathub.utils.Utils;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -51,13 +50,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             String token = authHeader.substring(7);
 
-            Claims claims = jwtService.parse(token, TokenType.AUTH);
-
-            if (TokenType.valueOf(claims.get("type", String.class)) != TokenType.AUTH) {
-                throw new CustomException(HttpStatus.FORBIDDEN, "This token is not allowed here", ErrorCode.INVALID_TOKEN);
-            }
-
-            final User user = userService.findById(Long.parseLong(claims.getSubject()));
+            var claims = jwtService.parse(token, TokenType.AUTH);
+            final User user = userService.findById(claims.getUserId());
 
             UsernamePasswordAuthenticationToken authToken = getAuthToken(user);
 
