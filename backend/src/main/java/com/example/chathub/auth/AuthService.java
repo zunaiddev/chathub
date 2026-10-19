@@ -60,7 +60,6 @@ public class AuthService {
             throw new UsernameNotFoundException("Invalid email or password");
         }
 
-
         User user = principal.user();
 
         auditEventService.record(user.getId(), AuditEventType.USER_LOGIN, AuditResourceType.USER, user.getId().toString(), AuditStatus.SUCCESS);

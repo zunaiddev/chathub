@@ -4,8 +4,10 @@ import com.example.chathub.enums.ErrorCode;
 import com.example.chathub.exception.ErrorResponse;
 import com.example.chathub.user.User;
 import com.example.chathub.utils.Routes;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.Assert;
 import tools.jackson.databind.ObjectMapper;
 
@@ -37,4 +39,15 @@ class ChathubApplicationTests {
 		Assert.isNull(user, "User is Present");
 	}
 
+	@Test
+	void bcryptTest() {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+		String password = "Test";
+
+		String encoded1 = passwordEncoder.encode(password);
+		String encoded2 = passwordEncoder.encode(password);
+
+		Assertions.assertNotEquals(encoded1, encoded2);
+	}
 }
