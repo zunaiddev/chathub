@@ -11,7 +11,8 @@ public final class Routes {
     private static final String[] PUBLIC_ROUTES = {
             "/auth/**",
             "/health",
-            "/actuator/health"
+            "/actuator/health",
+            "/ws/**"
     };
 
     private static final AntPathMatcher PATH_MATCHER =
