@@ -6,6 +6,7 @@ import SignUpPage from '../features/auth/SignUpPage'
 import HomePage from '../features/home/HomePage'
 import NotFoundPage from '../features/not-found/NotFoundPage'
 import ChatsPage from '../features/chats/ChatsPage'
+import TestPage from "./TestPage.tsx";
 
 const routeDefinitions = [
     {
@@ -21,6 +22,7 @@ const routeDefinitions = [
                     {path: 'login', element: <LoginPage/>},
                 ],
             },
+            {path: '/test', element: <TestPage/>},
             {path: '*', element: <NotFoundPage/>},
         ],
     },
