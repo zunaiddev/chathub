@@ -1,0 +1,9 @@
+@conversationId = 8
+
+POST {{baseUrl}}/conversations/{{conversationId}}/messages
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "message": "This is the message"
+}

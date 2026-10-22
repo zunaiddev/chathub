@@ -1,2 +1,6 @@
 POST {{baseUrl}}/auth/refresh
 Content-Type: application/json
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+%}

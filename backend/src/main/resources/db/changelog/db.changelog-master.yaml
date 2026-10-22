@@ -30,3 +30,11 @@ databaseChangeLog:
         - sqlFile:
             path: db/changelog/004-conversation-member.sql
             relativeToChangelogFile: false
+
+  - changeSet:
+      id: 005
+      author: zunaid
+      changes:
+        - sqlFile:
+            path: db/changelog/005-create-message-schema.sql
+            relativeToChangelogFile: false

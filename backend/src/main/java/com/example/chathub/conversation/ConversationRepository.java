@@ -32,4 +32,11 @@ public interface ConversationRepository extends JpaRepository<Conversation, Long
             ORDER BY c.createdAt DESC
             """)
     List<Conversation> findAllByUserId(long userId);
+
+    @Query("""
+            SELECT c FROM Conversation c WHERE c.id = :conversationId
+            AND EXISTS (SELECT cm.id FROM ConversationMember cm WHERE cm.conversation = c
+                        AND cm.user = :user)
+            """)
+    Optional<Conversation> findByIdAndUser(long conversationId, User user);
 }

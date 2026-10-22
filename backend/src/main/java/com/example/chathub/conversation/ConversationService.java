@@ -1,9 +1,13 @@
 package com.example.chathub.conversation;
 
-import com.example.chathub.audit.AuditEventService;
 import com.example.chathub.conversation.dto.ConversationRes;
 import com.example.chathub.enums.ConversationType;
 import com.example.chathub.exception.ConflictException;
+import com.example.chathub.exception.ConversationNotFound;
+import com.example.chathub.message.Message;
+import com.example.chathub.message.MessageService;
+import com.example.chathub.message.dto.MessageRes;
+import com.example.chathub.message.dto.SendMessageReq;
 import com.example.chathub.user.User;
 import com.example.chathub.user.UserService;
 import jakarta.transaction.Transactional;
@@ -19,8 +23,7 @@ public class ConversationService {
     private final ConversationRepository conversationRepository;
     private final UserService userService;
     private final ConversationMemberService memberService;
-
-    private final AuditEventService auditEventService;
+    private final MessageService messageService;
 
     @Transactional
     public ConversationRes createConversation(User user, long userId) {
@@ -47,5 +50,25 @@ public class ConversationService {
     public List<ConversationRes> findAllUser(User user) {
         return conversationRepository.findAllByUserId(user.getId())
                 .stream().map(ConversationRes::new).toList();
+    }
+
+    public List<MessageRes> getMessages(User user, long conversationId) {
+        Conversation conversation = findConversation(user, conversationId);
+
+        return messageService.findMessages(conversation)
+                .stream().map(MessageRes::new).toList();
+    }
+
+    public MessageRes sendMessage(User user, long conversationId, SendMessageReq req) {
+        Conversation conversation = findConversation(user, conversationId);
+
+        Message message = messageService.createMessage(req.message(), user, conversation);
+
+        return new MessageRes(message);
+    }
+
+    private Conversation findConversation(User user, long conversationId) {
+        return conversationRepository.findByIdAndUser(conversationId, user)
+                .orElseThrow(() -> new ConversationNotFound("Conversation not found with id " + conversationId));
     }
 }

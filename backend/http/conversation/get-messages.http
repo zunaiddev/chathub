@@ -1,0 +1,4 @@
+@conversationId = 3
+
+GET {{baseUrl}}/conversations/{{conversationId}}/messages
+Authorization: Bearer {{accessToken}}
