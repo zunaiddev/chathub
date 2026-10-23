@@ -93,7 +93,7 @@ public class GlobalExceptionHandler {
         log.warn(exc.getMessage());
 
         return new ErrorResponse(String.format("Path Argument %s must be a type of %s",
-                exc.getName(), exc.getRequiredType()), ErrorCode.INAVLID_PATH_ARGUMENT);
+                exc.getName(), exc.getRequiredType()), ErrorCode.INVALID_PATH_ARGUMENT);
     }
 
     @ExceptionHandler(NoResourceFoundException.class)

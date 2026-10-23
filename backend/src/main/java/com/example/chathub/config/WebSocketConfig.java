@@ -1,7 +1,7 @@
 package com.example.chathub.config;
 
+import com.example.chathub.exception.WebSocketExceptionHandler;
 import com.example.chathub.websocket.JwtChannelInterceptor;
-import com.example.chathub.websocket.WebSocketErrorHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
@@ -18,11 +18,11 @@ import java.util.List;
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private final List<String> allowedOrigins;
     private final JwtChannelInterceptor interceptor;
-    private final WebSocketErrorHandler errorHandler;
+    private final WebSocketExceptionHandler errorHandler;
 
     public WebSocketConfig(
             @Value("${chathub.websocket.allowed-origins}") String origins,
-            JwtChannelInterceptor interceptor, WebSocketErrorHandler errorHandler
+            JwtChannelInterceptor interceptor, WebSocketExceptionHandler errorHandler
     ) {
         this.allowedOrigins = Arrays.stream(origins.split(","))
                 .map(String::trim)

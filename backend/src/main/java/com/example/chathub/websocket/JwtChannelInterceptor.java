@@ -2,7 +2,7 @@ package com.example.chathub.websocket;
 
 import com.example.chathub.enums.ErrorCode;
 import com.example.chathub.enums.TokenType;
-import com.example.chathub.exception.CustomException;
+import com.example.chathub.exception.WebSocketException;
 import com.example.chathub.security.jwt.JwtClaims;
 import com.example.chathub.security.jwt.JwtService;
 import com.example.chathub.security.principal.UserPrincipal;
@@ -10,13 +10,13 @@ import com.example.chathub.user.User;
 import com.example.chathub.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
-import org.springframework.http.HttpStatus;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.MessageDeliveryException;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
-import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,15 +30,20 @@ public class JwtChannelInterceptor implements ChannelInterceptor {
 
     @Override
     public Message<?> preSend(@NonNull Message<?> message, @NonNull MessageChannel channel) {
-        StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+        StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+
+        if (accessor == null) {
+            throw new MessageDeliveryException("Invalid Stomp Message");
+        }
+
+        System.out.println(accessor.getCommand());
 
         if (StompCommand.CONNECT.equals(accessor.getCommand())) {
             String authorization =
                     accessor.getFirstNativeHeader("Authorization");
 
             if (authorization == null || !authorization.startsWith("Bearer ")) {
-                throw new CustomException(HttpStatus.UNAUTHORIZED,
-                        "Invalid or missing Authorization Token", ErrorCode.INVALID_TOKEN);
+                throw new WebSocketException("Invalid or missing Authorization Header", ErrorCode.INVALID_TOKEN);
             }
 
             final String token = authorization.substring(7);
@@ -50,6 +55,10 @@ public class JwtChannelInterceptor implements ChannelInterceptor {
                 throw new LockedException("Account is locked");
             }
 
+            if (!user.isEnabled()) {
+                throw new WebSocketException("Account is not enabled yet", ErrorCode.ACCOUNT_DISABLED);
+            }
+
             UserPrincipal principal = new UserPrincipal(user);
             Authentication authentication =
                     new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
@@ -57,7 +66,8 @@ public class JwtChannelInterceptor implements ChannelInterceptor {
             accessor.setUser(authentication);
         }
 
-        return MessageBuilder.createMessage(message.getPayload(), accessor.getMessageHeaders());
+//        return MessageBuilder.createMessage(message.getPayload(), accessor.getMessageHeaders());
+        return message;
     }
 
 //    @Override
