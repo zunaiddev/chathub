@@ -36,7 +36,8 @@ public class WebSocketExceptionHandler extends StompSubProtocolErrorHandler {
 
         byte[] payload = mapper.writeValueAsBytes(response);
 
-        String command = (String) response.details().get("command");
+        Map<String, ?> details = response.details();
+        String command = details == null ? null : (String) details.get("command");
 
         StompHeaderAccessor accessor =
                 StompHeaderAccessor.create(command == null
