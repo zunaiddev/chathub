@@ -32,12 +32,15 @@ public class WebSocketExceptionHandler extends StompSubProtocolErrorHandler {
             cause = cause.getCause();
         }
 
-        StompHeaderAccessor accessor =
-                StompHeaderAccessor.create(StompCommand.ERROR);
-
         ErrorResponse response = getErrorResponse(cause);
 
         byte[] payload = mapper.writeValueAsBytes(response);
+
+        String command = (String) response.details().get("command");
+
+        StompHeaderAccessor accessor =
+                StompHeaderAccessor.create(command == null
+                        ? StompCommand.ERROR : StompCommand.valueOf(command));
 
         accessor.setMessage(response.message());
         accessor.setLeaveMutable(true);
@@ -50,7 +53,7 @@ public class WebSocketExceptionHandler extends StompSubProtocolErrorHandler {
 
         String message = "Something went wrong";
         ErrorCode errorCode = ErrorCode.UNKNOWN;
-        Map<String, Object> details = Map.of("type", "WEBSOCKET_ERROR");
+        Map<String, ?> details = Map.of("type", "WEBSOCKET_ERROR");
 
         switch (exception) {
             case MessageDeliveryException _ -> {
@@ -62,8 +65,9 @@ public class WebSocketExceptionHandler extends StompSubProtocolErrorHandler {
                 errorCode = ErrorCode.LOCKED;
             }
             case CustomException customException -> {
-                message = exception.getMessage();
+                message = customException.getMessage();
                 errorCode = customException.getCode();
+                details = customException.getDetails();
             }
             default -> {
             }

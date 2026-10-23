@@ -67,8 +67,12 @@ public class ConversationService {
         return new MessageRes(message);
     }
 
-    private Conversation findConversation(User user, long conversationId) {
+    public Conversation findConversation(User user, long conversationId) {
         return conversationRepository.findByIdAndUser(conversationId, user)
                 .orElseThrow(() -> new ConversationNotFound("Conversation not found with id " + conversationId));
+    }
+
+    public boolean isMember(long conversationId, User user) {
+        return conversationRepository.existsByIdAndUser(conversationId, user);
     }
 }

@@ -1,12 +1,11 @@
 package com.example.chathub.websocket;
 
-import com.example.chathub.security.principal.UserPrincipal;
 import com.example.chathub.user.User;
+import com.example.chathub.utils.WebSocketUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
@@ -25,7 +24,7 @@ public class WebSocketEventListener {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
         User user = this.getUser(accessor.getUser());
 
-        log.info("[Connect] User connected to session {}. id: {}, email: {}",
+        log.info("[Connected] User connected to session {}. id: {}, email: {}",
                 accessor.getSessionId(), user.getId(), user.getEmail());
     }
 
@@ -34,7 +33,7 @@ public class WebSocketEventListener {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
         String sessionId = accessor.getSessionId();
 
-        log.info("[Disconnect] User Disconnected to session {}", sessionId);
+        log.info("[Disconnected] User Disconnected to session {}", sessionId);
     }
 
     @EventListener
@@ -43,7 +42,7 @@ public class WebSocketEventListener {
 
         User user = this.getUser(accessor.getUser());
 
-        log.info("[Subscribe] User {} Subscribed to destination {}", user.getEmail(), accessor.getDestination());
+        log.info("[Subscribed] User {} Subscribed to destination {}", user.getEmail(), accessor.getDestination());
     }
 
     @EventListener
@@ -51,16 +50,13 @@ public class WebSocketEventListener {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
         User user = this.getUser(accessor.getUser());
 
-        log.info("[Unsubscribe] User {} Unsubscribed from destination {}",
+        log.info("[Unsubscribed] User {} Unsubscribed from destination {}",
                 user.getEmail(), accessor.getDestination());
     }
 
     private User getUser(Principal principal) {
-        if (principal instanceof Authentication authentication
-                && authentication.getPrincipal() instanceof UserPrincipal(User user)) {
-            return user;
-        }
+        User user = WebSocketUtils.getUser(principal);
 
-        return new User("Guest", "guest@guest.com", "Guest");
+        return user == null ? new User("Guest", "guest@guest.com", "Guest") : user;
     }
 }

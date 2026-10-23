@@ -39,4 +39,10 @@ public interface ConversationRepository extends JpaRepository<Conversation, Long
                         AND cm.user = :user)
             """)
     Optional<Conversation> findByIdAndUser(long conversationId, User user);
+
+    @Query("""
+             SELECT CASE WHEN COUNT(cm) > 0 THEN true ELSE false END FROM ConversationMember cm WHERE cm.conversation.id = :conversationId
+             AND cm.user = :user
+            """)
+    boolean existsByIdAndUser(long conversationId, User user);
 }
