@@ -1,10 +1,10 @@
 import {useMemo, useState} from 'react'
-import AppLogo from '../../components/ui/AppLogo'
-import ChatAvatar from './ChatAvatar'
-import ChatIcon from './ChatIcon'
-import type {Conversation} from './types'
-import AddUserDialog from './AddUserDialog'
-import {type UserSearchResult, UserService} from '../../lib/api/UserService'
+import AppLogo from '../other/AppLogo.tsx'
+import ChatAvatar from './ChatAvatar.tsx'
+import ChatIcon from './ChatIcon.tsx'
+import type {Conversation} from '../../types/chat.types.ts'
+import AddUserDialog from './AddUserDialog.tsx'
+import {type UserSearchResult, UserService} from '../../lib/api/UserService.ts'
 
 type ChatSidebarProps = {
     conversations: Conversation[]

@@ -1,10 +1,14 @@
 import {useForm} from 'react-hook-form'
 import toast from 'react-hot-toast'
-import AuthLink from '../../components/ui/AuthLink'
-import Button from '../../components/ui/Button'
-import InputField from '../../components/ui/InputField.tsx'
-import {AuthService} from '../../lib/api/AuthService'
-import {emailValidationRules, nameValidationRules, registrationPasswordValidationRules,} from './validationRules';
+import AuthLink from '../components/fields/AuthLink.tsx'
+import Button from '../components/fields/Button.tsx'
+import InputField from '../components/fields/InputField.tsx'
+import {AuthService} from '../lib/api/AuthService.ts'
+import {
+    emailValidationRules,
+    nameValidationRules,
+    registrationPasswordValidationRules,
+} from '../validation/authValidation.ts';
 
 type SignUpFormValues = {
     name: string

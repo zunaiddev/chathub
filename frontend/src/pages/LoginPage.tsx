@@ -1,12 +1,12 @@
 import {useForm} from 'react-hook-form'
 import toast from 'react-hot-toast'
-import AuthLink from '../../components/ui/AuthLink'
-import Button from '../../components/ui/Button'
-import InputField from '../../components/ui/InputField.tsx'
-import {AuthService} from '../../lib/api/AuthService'
-import {emailValidationRules, loginPasswordValidationRules} from './validationRules'
-import {saveAccessToken} from '../../lib/api/authToken'
-import {UserService} from '../../lib/api/UserService'
+import AuthLink from '../components/fields/AuthLink.tsx'
+import Button from '../components/fields/Button.tsx'
+import InputField from '../components/fields/InputField.tsx'
+import {AuthService} from '../lib/api/AuthService.ts'
+import {emailValidationRules, loginPasswordValidationRules} from '../validation/authValidation.ts'
+import {saveAccessToken} from '../lib/api/authToken.ts'
+import {UserService} from '../lib/api/UserService.ts'
 
 type LoginFormValues = {
     email: string

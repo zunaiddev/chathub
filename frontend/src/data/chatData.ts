@@ -1,4 +1,4 @@
-import type {ChatMessage, Conversation} from './types'
+import type {ChatMessage, Conversation} from '../types/chat.types.ts'
 
 export const conversations: Conversation[] = [
     {

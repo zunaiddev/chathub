@@ -1,6 +1,6 @@
-import ChatAvatar from './ChatAvatar'
-import ChatIcon from './ChatIcon'
-import type {Conversation} from './types'
+import ChatAvatar from './ChatAvatar.tsx'
+import ChatIcon from './ChatIcon.tsx'
+import type {Conversation} from '../../types/chat.types.ts'
 
 type ConversationHeaderProps = {
     conversation: Conversation

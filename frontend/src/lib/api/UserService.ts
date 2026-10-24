@@ -1,6 +1,5 @@
 import {ApiResponse} from './ApiResponse'
-import {getAccessToken} from './authToken'
-import publicApi from './public'
+import protectedApi from './api.ts'
 
 export type UserSearchResult = {
     id: number
@@ -19,14 +18,7 @@ export type CurrentUser = UserSearchResult & {
 export class UserService {
     static async getCurrentUser(): Promise<ApiResponse<CurrentUser> | ApiResponse<never>> {
         try {
-            const accessToken = getAccessToken()
-            if (!accessToken) {
-                return ApiResponse.error(new Error('Authentication token is missing.'))
-            }
-
-            const response = await publicApi.get<CurrentUser>('/users', {
-                headers: {Authorization: `Bearer ${accessToken}`},
-            })
+            const response = await protectedApi.get<CurrentUser>('/users')
             return ApiResponse.success(response)
         } catch (error: unknown) {
             return ApiResponse.error(error)
@@ -35,14 +27,8 @@ export class UserService {
 
     static async searchByEmail(email: string): Promise<ApiResponse<UserSearchResult> | ApiResponse<never>> {
         try {
-            const accessToken = getAccessToken()
-            if (!accessToken) {
-                return ApiResponse.error(new Error('Please log in to search for people.'))
-            }
-
-            const response = await publicApi.get<UserSearchResult>('/users/search', {
+            const response = await protectedApi.get<UserSearchResult>('/users/search', {
                 params: {email},
-                headers: {Authorization: `Bearer ${accessToken}`},
             })
             return ApiResponse.success(response)
         } catch (error: unknown) {

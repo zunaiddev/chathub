@@ -1,5 +1,6 @@
 import {ApiResponse} from './ApiResponse'
-import publicApi from './public'
+import publicApi from './api.ts'
+import type {AxiosResponse} from "axios";
 
 export type LoginRequest = {
     email: string
@@ -18,11 +19,11 @@ export type AuthPayload = {
 export class AuthService {
     static async login(
         request: LoginRequest,
-    ): Promise<ApiResponse<AuthPayload> | ApiResponse<never>> {
+    ): Promise<ApiResponse<AuthPayload>> {
         try {
             const response = await publicApi.post<AuthPayload>('/auth/login', request, {
                 withCredentials: true,
-            })
+            });
             return ApiResponse.success(response);
         } catch (error: unknown) {
             return ApiResponse.error(error);
@@ -36,6 +37,18 @@ export class AuthService {
             const response = await publicApi.post<AuthPayload>('/auth/register', request, {
                 withCredentials: true,
             });
+            return ApiResponse.success(response);
+        } catch (error: unknown) {
+            return ApiResponse.error(error);
+        }
+    }
+
+    static async refreshToken(): Promise<ApiResponse<AuthPayload>> {
+        try {
+            const response: AxiosResponse = await publicApi.get<AuthPayload>('/auth/register', {
+                withCredentials: true,
+            });
+
             return ApiResponse.success(response);
         } catch (error: unknown) {
             return ApiResponse.error(error);

@@ -1,7 +1,7 @@
-import ConversationHeader from './ConversationHeader'
-import MessageComposer from './MessageComposer'
-import MessageHistory from './MessageHistory'
-import type {ChatMessage, Conversation} from './types'
+import ConversationHeader from './ConversationHeader.tsx'
+import MessageComposer from './MessageComposer.tsx'
+import MessageHistory from './MessageHistory.tsx'
+import type {ChatMessage, Conversation} from '../../types/chat.types.ts'
 
 type ChatPanelProps = {
     conversation: Conversation

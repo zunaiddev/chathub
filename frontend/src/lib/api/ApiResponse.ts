@@ -5,47 +5,47 @@ export type ApiError = {
     message: string
 }
 
-export type ApiResponseShape<TPayload, TError = ApiError> = {
+export type ApiResponseShape<TPayload> = {
     success: boolean
     status: HttpStatusCode
     payload: TPayload | null
-    error: TError | null
+    error: ApiError | null
 }
 
-export class ApiResponse<TPayload, TError = ApiError> {
+export class ApiResponse<TPayload> {
     readonly success: boolean
     readonly status: HttpStatusCode
     readonly payload: TPayload | null
-    readonly error: TError | null
+    readonly error: ApiError | null
 
-    private constructor(response: ApiResponseShape<TPayload, TError>) {
+    private constructor(response: ApiResponseShape<TPayload>) {
         this.success = response.success
         this.status = response.status
         this.payload = response.payload
         this.error = response.error
     }
 
-    static success<TPayload>(response: AxiosResponse<TPayload>): ApiResponse<TPayload, never> {
-        return new ApiResponse<TPayload, never>({
+    static success<TPayload>(response: AxiosResponse<TPayload>): ApiResponse<TPayload> {
+        return new ApiResponse<TPayload>({
             success: true,
             status: response.status,
             payload: response.data,
             error: null,
-        })
+        });
     }
 
-    static error(error: unknown): ApiResponse<never, ApiError> {
+    static error<TPayload>(error: unknown): ApiResponse<TPayload> {
         const apiError = this.normalizeError(error)
         const status = axios.isAxiosError(error) && error.response
             ? error.response.status as HttpStatusCode
             : HttpStatusCode.InternalServerError
 
-        return new ApiResponse<never, ApiError>({
+        return new ApiResponse<TPayload>({
             success: false,
             status,
             payload: null,
             error: apiError,
-        })
+        });
     }
 
     private static normalizeError(error: unknown): ApiError {
