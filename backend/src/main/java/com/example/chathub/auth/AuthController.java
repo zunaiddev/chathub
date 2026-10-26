@@ -39,12 +39,12 @@ public class AuthController {
         return authResponse;
     }
 
-    @PostMapping("/refresh")
+    @GetMapping("/refresh")
     public AuthResponse refreshToken(@CookieValue(value = "refreshToken") String token) {
         return authService.refreshToken(token);
     }
 
-    @GetMapping
+    @GetMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void logout(HttpServletResponse response) {
         CookieUtils.removeCookie(response);

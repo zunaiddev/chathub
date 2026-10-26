@@ -47,7 +47,7 @@ public class ConversationService {
         return new ConversationRes(newConversation);
     }
 
-    public List<ConversationRes> findAllUser(User user) {
+    public List<ConversationRes> findAllConversations(User user) {
         return conversationRepository.findAllByUserId(user.getId())
                 .stream().map(ConversationRes::new).toList();
     }

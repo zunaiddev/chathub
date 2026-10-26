@@ -19,7 +19,7 @@ public class ConversationController {
 
     @GetMapping()
     public List<ConversationRes> getAll(@AuthenticationPrincipal UserPrincipal principal) {
-        return conversationService.findAllUser(principal.user());
+        return conversationService.findAllConversations(principal.user());
     }
 
     @PostMapping("/{userId}")
