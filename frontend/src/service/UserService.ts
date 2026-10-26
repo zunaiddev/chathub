@@ -1,5 +1,5 @@
-import {ApiResponse} from './ApiResponse'
-import protectedApi from './api.ts'
+import {ApiResponse} from '../lib/api/ApiResponse.ts'
+import {protectedApi} from '../lib/api/api.ts'
 
 export type UserSearchResult = {
     id: number
@@ -18,8 +18,8 @@ export type CurrentUser = UserSearchResult & {
 export class UserService {
     static async getCurrentUser(): Promise<ApiResponse<CurrentUser> | ApiResponse<never>> {
         try {
-            const response = await protectedApi.get<CurrentUser>('/users')
-            return ApiResponse.success(response)
+            const response = await protectedApi.get<CurrentUser>('/users');
+            return ApiResponse.success(response);
         } catch (error: unknown) {
             return ApiResponse.error(error)
         }

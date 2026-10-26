@@ -3,7 +3,7 @@ import toast from 'react-hot-toast'
 import AuthLink from '../components/fields/AuthLink.tsx'
 import Button from '../components/fields/Button.tsx'
 import InputField from '../components/fields/InputField.tsx'
-import {AuthService} from '../lib/api/AuthService.ts'
+import {AuthService} from '../service/AuthService.ts'
 import {
     emailValidationRules,
     nameValidationRules,

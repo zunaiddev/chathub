@@ -1,12 +1,12 @@
 import {useForm} from 'react-hook-form'
-import toast from 'react-hot-toast'
 import AuthLink from '../components/fields/AuthLink.tsx'
 import Button from '../components/fields/Button.tsx'
 import InputField from '../components/fields/InputField.tsx'
-import {AuthService} from '../lib/api/AuthService.ts'
 import {emailValidationRules, loginPasswordValidationRules} from '../validation/authValidation.ts'
-import {saveAccessToken} from '../lib/api/authToken.ts'
-import {UserService} from '../lib/api/UserService.ts'
+import {AuthService} from "../service/AuthService.ts";
+import {UserService} from "../service/UserService.ts";
+import toast from "react-hot-toast";
+import {JwtService} from "../service/jwt.service.ts";
 
 type LoginFormValues = {
     email: string
@@ -18,14 +18,19 @@ function LoginPage() {
         register,
         handleSubmit,
         formState: {errors, isSubmitting},
-    } = useForm<LoginFormValues>()
+    } = useForm<LoginFormValues>({
+        defaultValues: {
+            email: "john@test.com",
+            password: "John@123"
+        }
+    })
 
     async function onSubmit(values: LoginFormValues) {
         const response = await AuthService.login(values)
 
         if (response.success) {
             if (response.payload?.accessToken) {
-                saveAccessToken(response.payload.accessToken)
+                JwtService.setToken(response.payload.accessToken);
                 const profileResponse = await UserService.getCurrentUser()
                 if (!profileResponse.success) {
                     toast.error(profileResponse.error?.message ?? 'Unable to load your profile.')

@@ -1,7 +1,6 @@
 import {jwtDecode, type JwtPayload as DecodedPayload} from "jwt-decode";
 import type {AccessTokenPayload, JwtPayload} from "../types/jwt.types.ts";
-import {numOpenSockets} from "vite";
-import {type AuthPayload, AuthService} from "../lib/api/AuthService.ts";
+import {type AuthPayload, AuthService} from "./AuthService.ts";
 import type {ApiResponse} from "../lib/api/ApiResponse.ts";
 import {HttpStatusCode} from "axios";
 
@@ -11,8 +10,6 @@ export class JwtService {
     static decode(token: string): JwtPayload | null {
         try {
             const payload: DecodedPayload = jwtDecode(token);
-
-            console.log(payload);
 
             if (!JwtService.isValiPayload(payload)) {
                 return null;
@@ -44,6 +41,7 @@ export class JwtService {
 
         const payload: JwtPayload | null = JwtService.decode(token);
 
+
         if (!payload) {
             return {token: null, cause: "NO_TOKEN"};
         }
@@ -53,7 +51,7 @@ export class JwtService {
                 success,
                 status,
                 payload
-            }: ApiResponse<AuthPayload> = await AuthService.refreshToken();
+            } : ApiResponse<AuthPayload> = await AuthService.refreshToken();
 
             if (success && payload) {
                 JwtService.setToken(payload.accessToken);
@@ -67,7 +65,7 @@ export class JwtService {
             return {token: null, cause: "NO_TOKEN"};
         }
 
-        return {token: null, cause: "NO_TOKEN"};
+        return {token};
     }
 
     private static isValiPayload(payload: DecodedPayload): boolean {

@@ -1,6 +1,6 @@
 import {Client} from '@stomp/stompjs'
 import {type FormEvent, useEffect, useRef, useState} from 'react'
-import {JwtService} from "../service/jwt.service.ts";
+
 
 type ActiveSubscription = { destination: string; unsubscribe: () => void }
 type ReceivedMessage = { id: number; body: string; receivedAt: string }
@@ -17,13 +17,6 @@ function TestPage() {
     const [includeAuthorization, setIncludeAuthorization] = useState(false)
     const [connectionState, setConnectionState] = useState('Disconnected')
     const [error, setError] = useState('')
-
-    useEffect(() => {
-        const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwidHlwZSI6IkFVVEgiLCJpYXQiOjE3OTI4Mjc2NDgsImV4cCI6MTc5MjgyOCwianRpIjoiMTAzYmFlN2EtY2IyMC00NGFmLTliYWMtNWJhN2Y3OWVmZTk1In0.0IiYQ6XOQCN5rRgce8HsSxzabxxXDRdpM5oB2s7QNJo";
-        const payload = JwtService.decode(token);
-
-        console.log(payload);
-    }, []);
 
     useEffect(function cleanupClient() {
         return function deactivateClient() {

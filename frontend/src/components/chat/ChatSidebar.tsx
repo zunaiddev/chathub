@@ -4,7 +4,7 @@ import ChatAvatar from './ChatAvatar.tsx'
 import ChatIcon from './ChatIcon.tsx'
 import type {Conversation} from '../../types/chat.types.ts'
 import AddUserDialog from './AddUserDialog.tsx'
-import {type UserSearchResult, UserService} from '../../lib/api/UserService.ts'
+import {type UserSearchResult, UserService} from '../../service/UserService.ts'
 
 type ChatSidebarProps = {
     conversations: Conversation[]

@@ -1,6 +1,6 @@
 import {type FormEvent, useState} from 'react'
 import {emailValidationRules} from '../../validation/authValidation.ts'
-import type {UserSearchResult} from '../../lib/api/UserService.ts'
+import type {UserSearchResult} from '../../service/UserService.ts'
 import ChatIcon from './ChatIcon.tsx'
 
 type AddUserDialogProps = {

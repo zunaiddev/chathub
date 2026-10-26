@@ -1,8 +1,8 @@
-import axios, {type AxiosResponse} from 'axios'
+import axios, {AxiosError, type AxiosResponse} from 'axios'
 import toast from 'react-hot-toast'
-import {getAccessToken} from './authToken'
+import {JwtService} from "../../service/jwt.service.ts";
 
-const baseURL = import.meta.env.VITE_API_BASE_URL
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const publicApi = axios.create({
     baseURL,
@@ -19,24 +19,26 @@ const protectedApi = axios.create({
 });
 
 protectedApi.interceptors.request.use(
-    function addAuthorizationHeader(config) {
-        const accessToken = getAccessToken()
+    async (config) => {
+        const {token} = await JwtService.getAccessToken();
 
-        if (!accessToken) {
-            if (typeof window !== 'undefined' && window.location.pathname !== '/auth/login') {
-                window.location.assign('/auth/login')
-            }
+        if (!token) {
+            window.location.assign("/auth/login");
 
-            return Promise.reject(new Error('Authentication token is missing.'))
+            return Promise.reject(
+                new AxiosError("Access token is missing")
+            );
         }
 
-        config.headers.Authorization = `Bearer ${accessToken}`
-        return config
+        config.headers.Authorization = `Bearer ${token}`;
+
+        return config;
     },
-)
+    (error) => Promise.reject(error)
+);
 
 function handleResponse(response: AxiosResponse) {
-    return response
+    return response;
 }
 
 function handleResponseError(error: unknown) {
@@ -61,5 +63,4 @@ protectedApi.interceptors.response.use(
     handleResponseError,
 );
 
-export {publicApi, protectedApi}
-export default publicApi
+export {publicApi, protectedApi};

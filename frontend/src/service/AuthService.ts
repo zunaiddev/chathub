@@ -1,5 +1,5 @@
-import {ApiResponse} from './ApiResponse'
-import publicApi from './api.ts'
+import {ApiResponse} from '../lib/api/ApiResponse.ts'
+import {publicApi} from '../lib/api/api.ts'
 import type {AxiosResponse} from "axios";
 
 export type LoginRequest = {
@@ -45,7 +45,7 @@ export class AuthService {
 
     static async refreshToken(): Promise<ApiResponse<AuthPayload>> {
         try {
-            const response: AxiosResponse = await publicApi.get<AuthPayload>('/auth/register', {
+            const response: AxiosResponse = await publicApi.get<AuthPayload>('/auth/refresh', {
                 withCredentials: true,
             });
 

@@ -1,5 +1,5 @@
-import {Outlet} from 'react-router-dom'
-import AppLogo from '../components/other/AppLogo.tsx'
+import {Outlet} from 'react-router-dom';
+import AppLogo from '../components/other/AppLogo.tsx';
 
 function AuthLayout() {
     return (
@@ -14,7 +14,7 @@ function AuthLayout() {
                 <p className="mt-6 text-center text-xs text-(--color-text-muted)">Secure conversations start here</p>
             </div>
         </main>
-    )
+    );
 }
 
-export default AuthLayout
+export default AuthLayout;

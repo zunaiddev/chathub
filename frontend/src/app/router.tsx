@@ -7,6 +7,7 @@ import HomePage from '../pages/HomePage.tsx'
 import NotFoundPage from '../pages/NotFoundPage.tsx'
 import ChatsPage from '../pages/ChatsPage.tsx'
 import TestPage from "../pages/TestPage.tsx";
+import ProtectedGuard from "../guard/ProtectedGuard.tsx";
 
 const routeDefinitions = [
     {
@@ -22,7 +23,11 @@ const routeDefinitions = [
                     {path: 'login', element: <LoginPage/>},
                 ],
             },
-            {path: '/test', element: <TestPage/>},
+            {
+                path: '/test', element: <ProtectedGuard isPublic={true}>
+                    <TestPage/>
+                </ProtectedGuard>
+            },
             {path: '*', element: <NotFoundPage/>},
         ],
     },
