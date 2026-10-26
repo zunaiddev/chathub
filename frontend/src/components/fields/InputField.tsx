@@ -1,7 +1,7 @@
 import {type InputHTMLAttributes, useState} from 'react';
 import type {FieldError, UseFormRegisterReturn} from 'react-hook-form';
-import EyeIcon from '../../icons/EyeIcon'
-import EyeOffIcon from '../../icons/EyeOffIcon';
+import EyeIcon from '../../icons/EyeIcon.tsx'
+import EyeOffIcon from '../../icons/EyeOffIcon.tsx';
 
 type InputFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'name'> & {
     label: string

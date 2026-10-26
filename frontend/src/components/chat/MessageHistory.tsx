@@ -1,4 +1,4 @@
-import type {ChatMessage} from './types'
+import type {ChatMessage} from '../../types/chat.types.ts'
 
 type MessageHistoryProps = {
     messages: ChatMessage[]

@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import ChatIcon from './ChatIcon'
+import ChatIcon from './ChatIcon.tsx'
 
 type MessageComposerProps = {
     onSend: (text: string) => void

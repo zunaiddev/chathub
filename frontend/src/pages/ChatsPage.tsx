@@ -1,8 +1,8 @@
 import {useState} from 'react'
-import ChatPanel from './ChatPanel'
-import ChatSidebar from './ChatSidebar'
-import {conversations, sampleMessages} from './chatData'
-import type {ChatMessage} from './types'
+import ChatPanel from '../components/chat/ChatPanel.tsx'
+import ChatSidebar from '../components/chat/ChatSidebar.tsx'
+import {conversations, sampleMessages} from '../data/chatData.ts'
+import type {ChatMessage} from '../types/chat.types.ts'
 
 function ChatsPage() {
     const [selectedId, setSelectedId] = useState(conversations[0].id)

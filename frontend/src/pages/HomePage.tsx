@@ -1,4 +1,4 @@
-import AppLogo from '../../components/ui/AppLogo'
+import AppLogo from '../components/other/AppLogo.tsx'
 
 function HomePage() {
     function renderTechnology(technology: string) {

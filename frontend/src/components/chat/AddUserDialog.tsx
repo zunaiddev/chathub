@@ -1,7 +1,7 @@
 import {type FormEvent, useState} from 'react'
-import {emailValidationRules} from '../auth/validationRules'
-import type {UserSearchResult} from '../../lib/api/UserService'
-import ChatIcon from './ChatIcon'
+import {emailValidationRules} from '../../validation/authValidation.ts'
+import type {UserSearchResult} from '../../lib/api/UserService.ts'
+import ChatIcon from './ChatIcon.tsx'
 
 type AddUserDialogProps = {
     open: boolean

@@ -1,5 +1,5 @@
 import {Outlet} from 'react-router-dom'
-import AppLogo from '../../components/ui/AppLogo'
+import AppLogo from '../components/other/AppLogo.tsx'
 
 function AuthLayout() {
     return (
