@@ -1,4 +1,7 @@
 HELP.md
+.env
+.env.*
+!.env.example
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -31,3 +34,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Local agent and cloud configuration ###
+.agents/
+.codex/
+.gemini/
+.aws/
+.mvn
