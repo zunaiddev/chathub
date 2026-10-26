@@ -32,6 +32,10 @@ export class JwtService {
         localStorage.setItem(JwtService.ACCESS_TOKEN_KEY, token);
     }
 
+    static clearToken(): void {
+        localStorage.removeItem(JwtService.ACCESS_TOKEN_KEY);
+    }
+
     static async getAccessToken(): Promise<AccessTokenPayload> {
         const token = localStorage.getItem(JwtService.ACCESS_TOKEN_KEY);
 

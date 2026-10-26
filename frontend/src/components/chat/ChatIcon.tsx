@@ -1,4 +1,4 @@
-type ChatIconName = 'add' | 'search' | 'send' | 'attachment' | 'emoji' | 'back' | 'more' | 'close'
+type ChatIconName = 'add' | 'search' | 'send' | 'attachment' | 'emoji' | 'back' | 'more' | 'close' | 'logout'
 
 type ChatIconProps = {
     name: ChatIconName
@@ -54,6 +54,11 @@ function ChatIcon({name, className = 'size-5'}: ChatIconProps) {
         case 'close':
             return <svg {...commonProps}>
                 <path d="m18 6-12 12M6 6l12 12"/>
+            </svg>
+        case 'logout':
+            return <svg {...commonProps}>
+                <path d="M15 8l4 4-4 4M19 12H9"/>
+                <path d="M12 5H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h5"/>
             </svg>
     }
 }

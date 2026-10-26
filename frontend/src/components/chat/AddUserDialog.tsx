@@ -1,4 +1,4 @@
-import {type FormEvent, useState} from 'react'
+import {type ChangeEvent, useState} from 'react'
 import {emailValidationRules} from '../../validation/authValidation.ts'
 import type {UserSearchResult} from '../../service/UserService.ts'
 import ChatIcon from './ChatIcon.tsx'
@@ -6,17 +6,19 @@ import ChatIcon from './ChatIcon.tsx'
 type AddUserDialogProps = {
     open: boolean
     isSearching: boolean
+    isCreating: boolean
     user: UserSearchResult | null
     errorMessage: string
     onClose: () => void
     onSearch: (email: string) => void
+    onCreateConversation: (user: UserSearchResult) => void
 }
 
-function AddUserDialog({open, isSearching, user, errorMessage, onClose, onSearch}: AddUserDialogProps) {
+function AddUserDialog({open, isSearching, isCreating, user, errorMessage, onClose, onSearch, onCreateConversation}: AddUserDialogProps) {
     const [email, setEmail] = useState('')
     const [validationMessage, setValidationMessage] = useState('')
 
-    function submitSearch(event: FormEvent<HTMLFormElement>) {
+    function submitSearch(event: ChangeEvent<HTMLFormElement>) {
         event.preventDefault()
         const value = email.trim()
         const emailPatternRule = emailValidationRules.pattern
@@ -38,7 +40,7 @@ function AddUserDialog({open, isSearching, user, errorMessage, onClose, onSearch
     if (!open) return null
 
     return (
-        <div className="fixed inset-0 z-20 grid place-items-center bg-black/60 p-4" role="presentation"
+        <div className="w-screen h-full fixed z-999 grid place-items-center bg-black/60 p-4" role="presentation"
              onMouseDown={function closeOnBackdrop(event) {
                  if (event.target === event.currentTarget) onClose()
              }}>
@@ -69,7 +71,7 @@ function AddUserDialog({open, isSearching, user, errorMessage, onClose, onSearch
                                }}/>
                         <button type="submit"
                                 className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-(--radius-control) bg-(--color-brand) px-4 text-sm font-semibold text-(--color-text-on-brand) hover:bg-(--color-brand-hover) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-focus) disabled:cursor-wait disabled:opacity-70"
-                                disabled={isSearching}>
+                                disabled={isSearching || isCreating}>
                             {isSearching ? 'Searching…' : <><ChatIcon name="search" className="size-4"/>Search</>}
                         </button>
                     </div>
@@ -89,6 +91,14 @@ function AddUserDialog({open, isSearching, user, errorMessage, onClose, onSearch
               <span className="block truncate text-sm font-semibold text-(--color-text)">{user.name}</span>
               <span className="block truncate text-xs text-(--color-text-muted)">{user.email}</span>
             </span>
+                        <button type="button"
+                                className="inline-flex h-9 shrink-0 items-center justify-center rounded-(--radius-control) bg-(--color-brand) px-3 text-sm font-semibold text-(--color-text-on-brand) hover:bg-(--color-brand-hover) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-focus) disabled:cursor-wait disabled:opacity-70"
+                                disabled={isCreating}
+                                onClick={function startConversation() {
+                                    onCreateConversation(user)
+                                }}>
+                            {isCreating ? 'Starting…' : 'Start chat'}
+                        </button>
                     </div>
                 )}
             </section>

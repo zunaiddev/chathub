@@ -54,4 +54,16 @@ export class AuthService {
             return ApiResponse.error(error);
         }
     }
+
+    static async logout() {
+        try {
+            const response: AxiosResponse = await publicApi.get('/auth/logout', {
+                withCredentials: true,
+            });
+
+            return ApiResponse.success(response);
+        } catch (error: unknown) {
+            return ApiResponse.error(error);
+        }
+    }
 }

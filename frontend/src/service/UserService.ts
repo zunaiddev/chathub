@@ -35,4 +35,23 @@ export class UserService {
             return ApiResponse.error(error)
         }
     }
+
+    static async getConversations(): Promise<ApiResponse<unknown[]> | ApiResponse<never>> {
+        try {
+            const response = await protectedApi.get<unknown[]>('/conversations');
+            return ApiResponse.success(response);
+        } catch (error: unknown) {
+            return ApiResponse.error(error);
+        }
+    }
+
+    static async createConversation(userId: number): Promise<ApiResponse<unknown>> {
+        try {
+            const response = await protectedApi.post(`/conversations/${userId}`);
+
+            return ApiResponse.success(response)
+        } catch (error: unknown) {
+            return ApiResponse.error(error);
+        }
+    }
 }
